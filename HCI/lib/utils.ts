@@ -13,7 +13,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // https://react.dev/reference/react/cache#caveats
 // > React will invalidate the cache for all memoized functions for each server request.
-export const getAppConfig = cache(async (headers: Headers): Promise<AppConfig> => {
+export const getAppConfig = cache(async (_headers: Headers): Promise<AppConfig> => {
   return APP_CONFIG_DEFAULTS;
 });
 
