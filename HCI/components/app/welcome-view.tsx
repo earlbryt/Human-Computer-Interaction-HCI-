@@ -3,9 +3,10 @@ import { PlantHealthPanel } from '@/components/app/plant-health-panel';
 
 interface WelcomeViewProps {
   onStartCall: () => void;
+  startButtonText?: string;
 }
 
-export const WelcomeView = ({ onStartCall, ref }: React.ComponentProps<'div'> & WelcomeViewProps) => {
+export const WelcomeView = ({ onStartCall, startButtonText, ref }: React.ComponentProps<'div'> & WelcomeViewProps) => {
   return (
     <div
       ref={ref}

@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import { ConnectionProvider } from '@/hooks/useConnection';
 import { getAppConfig } from '@/lib/utils';
 
@@ -7,7 +6,6 @@ interface LayoutProps {
 }
 
 export default async function Layout({ children }: LayoutProps) {
-  const hdrs = await headers();
   const appConfig = await getAppConfig();
 
   return (
