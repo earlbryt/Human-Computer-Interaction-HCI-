@@ -175,7 +175,7 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
           <div className="relative flex size-32 items-center justify-center">
             <span className="absolute inline-flex size-full rounded-full border-2 border-sky-500/20" />
             <span className="absolute inline-flex size-full animate-[spin_1.1s_linear_infinite] rounded-full border-2 border-sky-500 border-b-transparent border-l-transparent" />
-            <span className="relative rounded-full bg-sky-500 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+            <span className="relative rounded-full bg-sky-500 px-4 py-1 text-xs font-semibold tracking-wide text-white uppercase">
               Analyzing
             </span>
           </div>
@@ -188,8 +188,6 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-
     </section>
   );
 }
-
