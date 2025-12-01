@@ -7,8 +7,7 @@ export default async function Page({
 }: {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const hdrs = await headers();
-  const appConfig = await getAppConfig(hdrs);
+  const appConfig = await getAppConfig();
   const params = (await searchParams) ?? {};
   const startParam = typeof params.start === 'string' ? params.start : undefined;
   const autoStartCall = startParam === 'call';
