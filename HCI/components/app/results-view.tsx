@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/livekit/button';
 
@@ -70,29 +71,33 @@ export function ResultsView() {
   const diagnosisLabel = data.className?.toUpperCase() === 'NULL' ? 'No Pod Detected' : data.className;
 
   return (
-    <main className="flex min-h-svh items-center justify-center bg-background px-4 py-10 sm:py-16">
+    <main className="bg-background flex min-h-svh items-center justify-center px-4 py-10 sm:py-16">
       <div className="flex w-full max-w-3xl flex-col gap-8 sm:gap-10">
         <header className="space-y-3 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Diagnosis summary</p>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+            Diagnosis summary
+          </p>
+          <h1 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
             {diagnosisLabel}
           </h1>
         </header>
 
         {data.imageUrl && (
-          <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-lg border border-border/40">
-            <img
+          <div className="border-border/40 relative mx-auto w-full max-w-sm overflow-hidden rounded-lg border">
+            <Image
               src={data.imageUrl}
               alt={`Uploaded leaf showing ${diagnosisLabel}`}
               className="aspect-square w-full object-cover"
+              width={400}
+              height={400}
             />
           </div>
         )}
 
-        <section className="space-y-4 text-sm text-foreground">
+        <section className="text-foreground space-y-4 text-sm">
           <div className="space-y-3">
             <h2 className="text-base font-semibold">Recommended actions</h2>
-            <ol className="list-decimal space-y-2 pl-5 text-muted-foreground">
+            <ol className="text-muted-foreground list-decimal space-y-2 pl-5">
               {[data.action, ...(data.tips ?? [])].map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
