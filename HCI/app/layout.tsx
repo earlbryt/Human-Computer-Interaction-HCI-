@@ -42,8 +42,7 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const hdrs = await headers();
-  const appConfig = await getAppConfig(hdrs);
+  const appConfig = await getAppConfig();
   const { pageTitle, pageDescription } = appConfig;
   const styles = getStyles(appConfig);
 
