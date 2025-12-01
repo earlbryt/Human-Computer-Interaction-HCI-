@@ -43,6 +43,25 @@ export function ConnectionProvider({ appConfig, children }: ConnectionProviderPr
         const url = new URL(process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT!, window.location.origin);
 
         try {
+          let participantMetadata: string | undefined = undefined;
+          try {
+            const stored = window.sessionStorage.getItem('plant-diagnosis');
+            if (stored) {
+              const parsed = JSON.parse(stored) as any;
+              const cls = String(parsed?.className ?? '');
+              const isHealthy = cls.toUpperCase() === 'NULL';
+              const confidence = Number(parsed?.confidence ?? 0);
+              participantMetadata = JSON.stringify({
+                className: cls,
+                confidence,
+                isHealthy,
+                action: parsed?.action,
+                tips: parsed?.tips,
+                imageUrl: parsed?.imageUrl,
+              });
+            }
+          } catch {}
+
           const res = await fetch(url.toString(), {
             method: 'POST',
             headers: {
@@ -54,8 +73,14 @@ export function ConnectionProvider({ appConfig, children }: ConnectionProviderPr
                     agents: [{ agent_name: appConfig.agentName }],
                   }
                 : undefined,
+              participant_metadata: participantMetadata,
             }),
           });
+          try {
+            if (participantMetadata) {
+              window.sessionStorage.removeItem('plant-diagnosis');
+            }
+          } catch {}
           return await res.json();
         } catch (error) {
           console.error('Error fetching connection details:', error);

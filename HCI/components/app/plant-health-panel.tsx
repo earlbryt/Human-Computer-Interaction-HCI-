@@ -16,7 +16,8 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
+  const uploadInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -62,10 +63,12 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
     }
   }
 
-  const canTalkToAgent = Boolean(diagnosis);
+  function handleTakePhotoClick() {
+    cameraInputRef.current?.click();
+  }
 
   function handleUploadClick() {
-    fileInputRef.current?.click();
+    uploadInputRef.current?.click();
   }
 
   function getTreatmentInfo(conditionOverride?: string) {
@@ -139,10 +142,17 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
   return (
     <section className="mx-auto mt-8 w-full max-w-md space-y-4 px-2 text-left sm:mt-10 sm:max-w-lg sm:px-0">
       <input
-        ref={fileInputRef}
+        ref={cameraInputRef}
         type="file"
         accept="image/*"
         capture="environment"
+        className="sr-only"
+        onChange={handleFileChange}
+      />
+      <input
+        ref={uploadInputRef}
+        type="file"
+        accept="image/*"
         className="sr-only"
         onChange={handleFileChange}
       />
@@ -152,21 +162,21 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
           type="button"
           variant="outline"
           size="default"
-          onClick={handleUploadClick}
+          onClick={handleTakePhotoClick}
           disabled={isLoading}
           className="w-full justify-center sm:w-auto"
         >
           Take photo
         </Button>
         <Button
+          type="button"
           variant="primary"
           size="default"
-          disabled={!canTalkToAgent || isLoading}
-          onClick={onStartCall}
+          onClick={handleUploadClick}
+          disabled={isLoading}
           className="w-full justify-center sm:w-auto"
         >
-          <ChatCircleDots className="mr-2 size-4" weight="fill" />
-          Talk to Dr. Eugenia
+          Upload photo
         </Button>
       </div>
 

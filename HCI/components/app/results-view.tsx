@@ -51,7 +51,6 @@ export function ResultsView() {
   }
 
   function handleTalk() {
-    clearStoredDiagnosis();
     router.push('/?start=call');
   }
 
