@@ -62,19 +62,20 @@ export function ResultsView() {
 
   if (!data) {
     return (
-      <main className="flex min-h-svh items-center justify-center bg-background px-4 py-12 sm:py-16">
-        <div className="text-sm text-muted-foreground">Loading diagnosis…</div>
+      <main className="bg-background flex min-h-svh items-center justify-center px-4 py-12 sm:py-16">
+        <div className="text-muted-foreground text-sm">Loading diagnosis…</div>
       </main>
     );
   }
 
-  const diagnosisLabel = data.className?.toUpperCase() === 'NULL' ? 'No Pod Detected' : data.className;
+  const diagnosisLabel =
+    data.className?.toUpperCase() === 'NULL' ? 'No Pod Detected' : data.className;
 
   return (
     <main className="bg-background flex min-h-svh items-center justify-center px-4 py-10 sm:py-16">
       <div className="flex w-full max-w-3xl flex-col gap-8 sm:gap-10">
         <header className="space-y-3 text-center">
-          <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+          <p className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
             Diagnosis summary
           </p>
           <h1 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">
