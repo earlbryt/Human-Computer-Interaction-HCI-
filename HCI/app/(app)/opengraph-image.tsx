@@ -102,8 +102,7 @@ export const contentType = 'image/png';
 
 // Image generation
 export default async function Image() {
-  const hdrs = await headers();
-  const appConfig = await getAppConfig(hdrs);
+  const appConfig = await getAppConfig();
 
   const pageTitle = cleanPageTitle(appConfig.pageTitle);
   const logoUri = appConfig.logoDark || appConfig.logo;
