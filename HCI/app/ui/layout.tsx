@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default async function Layout({ children }: LayoutProps) {
   const hdrs = await headers();
-  const appConfig = await getAppConfig(hdrs);
+  const appConfig = await getAppConfig();
 
   return (
     <ConnectionProvider appConfig={appConfig}>
