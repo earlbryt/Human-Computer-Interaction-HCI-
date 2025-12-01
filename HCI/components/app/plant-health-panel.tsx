@@ -3,9 +3,9 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChatCircleDots } from '@phosphor-icons/react';
-import { Button } from '@/components/livekit/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/livekit/alert';
-import { analyzeLeaf, type PlantDiagnosis } from '@/lib/plant-api';
+import { Button } from '@/components/livekit/button';
+import { type PlantDiagnosis, analyzeLeaf } from '@/lib/plant-api';
 
 interface PlantHealthPanelProps {
   onStartCall: () => void;
@@ -118,7 +118,7 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
         return {
           status: 'No Pod Detected',
           action: 'Retake the photo with better lighting and a clear view of a single leaf.',
-          tips: [        
+          tips: [
             'Ensure the leaf fills most of the frame.',
             'Wipe dust or water off the leaf before taking a new photo.',
           ],
@@ -171,10 +171,10 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
       </div>
 
       {isLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm">
+        <div className="bg-background/95 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <div className="relative flex size-32 items-center justify-center">
             <span className="absolute inline-flex size-full rounded-full border-2 border-sky-500/20" />
-            <span className="absolute inline-flex size-full rounded-full border-2 border-sky-500 border-b-transparent border-l-transparent animate-[spin_1.1s_linear_infinite]" />
+            <span className="absolute inline-flex size-full animate-[spin_1.1s_linear_infinite] rounded-full border-2 border-sky-500 border-b-transparent border-l-transparent" />
             <span className="relative rounded-full bg-sky-500 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white">
               Analyzing
             </span>
