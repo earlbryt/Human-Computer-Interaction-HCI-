@@ -156,7 +156,7 @@ export function PlantHealthPanel({ onStartCall }: PlantHealthPanelProps) {
           disabled={isLoading}
           className="w-full justify-center sm:w-auto"
         >
-          Upload photo
+          Take photo
         </Button>
         <Button
           variant="primary"
