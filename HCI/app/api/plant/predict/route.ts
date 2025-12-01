@@ -5,6 +5,15 @@ export const revalidate = 0;
 
 const UPSTREAM_BASE = process.env.PLANT_API_BASE_URL ?? 'https://codoc-backend0.onrender.com';
 
+function hasName(value: unknown): value is { name: string } {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'name' in value &&
+    typeof (value as Record<string, unknown>).name === 'string'
+  );
+}
+
 export async function POST(req: Request) {
   try {
     const inForm = await req.formData();
@@ -15,7 +24,7 @@ export async function POST(req: Request) {
     }
 
     const outForm = new FormData();
-    const filename = typeof (file as any).name === 'string' ? (file as any).name : 'upload.jpg';
+    const filename = hasName(file) ? file.name : 'upload.jpg';
     outForm.append('file', file, filename);
 
     const upstreamRes = await fetch(`${UPSTREAM_BASE}/predict`, {
