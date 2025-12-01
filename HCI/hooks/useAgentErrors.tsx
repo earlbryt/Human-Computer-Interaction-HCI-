@@ -15,15 +15,7 @@ export function useAgentErrors() {
         title: 'Session ended',
         description: (
           <>
-            {reasons.length > 1 && (
-              <ul className="list-inside list-disc">
-                {reasons.map((reason) => (
-                  <li key={reason}>{reason}</li>
-                ))}
-              </ul>
-            )}
-            {reasons.length === 1 && <p className="w-full">{reasons[0]}</p>}
-            <p className="w-full">If this keeps happening, please contact support.</p>
+            <p className="w-full">Our agent is currently overloaded, please retry shortly.</p>
           </>
         ),
       });
