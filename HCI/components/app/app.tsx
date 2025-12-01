@@ -6,6 +6,7 @@ import { ViewController } from '@/components/app/view-controller';
 import { Toaster } from '@/components/livekit/toaster';
 import { useAgentErrors } from '@/hooks/useAgentErrors';
 import { ConnectionProvider } from '@/hooks/useConnection';
+import { useConnection } from '@/hooks/useConnection';
 import { useDebugMode } from '@/hooks/useDebug';
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -29,9 +30,19 @@ export function App({ appConfig, autoStartCall = false }: AppProps) {
       <main className="grid h-svh grid-cols-1 place-content-center">
         <ViewController appConfig={appConfig} autoStartCall={autoStartCall} />
       </main>
-      <StartAudio label="Start Audio" />
-      <RoomAudioRenderer />
+      <AudioWhenActive />
       <Toaster />
     </ConnectionProvider>
+  );
+}
+
+function AudioWhenActive() {
+  const { isConnectionActive } = useConnection();
+  if (!isConnectionActive) return null;
+  return (
+    <>
+      <StartAudio label="Start Audio" />
+      <RoomAudioRenderer />
+    </>
   );
 }

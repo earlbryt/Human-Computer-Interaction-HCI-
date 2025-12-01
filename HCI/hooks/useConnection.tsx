@@ -1,8 +1,8 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useRef, useState } from 'react';
 import { TokenSource } from 'livekit-client';
-import { SessionProvider, useSession } from '@livekit/components-react';
+import { SessionProvider, useMaybeRoomContext, useSession } from '@livekit/components-react';
 import type { AppConfig } from '@/app-config';
 
 interface ConnectionContextType {
@@ -34,6 +34,8 @@ interface ConnectionProviderProps {
 
 export function ConnectionProvider({ appConfig, children }: ConnectionProviderProps) {
   const [isConnectionActive, setIsConnectionActive] = useState(false);
+  const [hasDisconnected, setHasDisconnected] = useState(false);
+  const [disconnectScheduled, setDisconnectScheduled] = useState(false);
 
   const tokenSource = useMemo(() => {
     if (typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === 'string') {
@@ -71,19 +73,47 @@ export function ConnectionProvider({ appConfig, children }: ConnectionProviderPr
   );
 
   const { start: startSession, end: endSession } = session;
+  const room = useMaybeRoomContext();
+
+  const hasDisconnectedRef = useRef(false);
+  const disconnectScheduledRef = useRef(false);
 
   const value = useMemo(() => {
+    const endCallOnce = async () => {
+      if (hasDisconnectedRef.current) return;
+      hasDisconnectedRef.current = true;
+      setHasDisconnected(true);
+      endSession();
+      setDisconnectScheduled(false);
+      disconnectScheduledRef.current = false;
+    };
+
     return {
       isConnectionActive,
       connect: () => {
         setIsConnectionActive(true);
+        setHasDisconnected(false);
+        setDisconnectScheduled(false);
+        hasDisconnectedRef.current = false;
+        disconnectScheduledRef.current = false;
         startSession();
       },
       startDisconnectTransition: () => {
         setIsConnectionActive(false);
+        if (hasDisconnectedRef.current || disconnectScheduledRef.current) return;
+        setDisconnectScheduled(true);
+        disconnectScheduledRef.current = true;
+        setTimeout(() => {
+          void endCallOnce();
+        }, 0);
       },
       onDisconnectTransitionComplete: () => {
-        endSession();
+        if (!hasDisconnectedRef.current) {
+          void endCallOnce();
+        } else {
+          setDisconnectScheduled(false);
+          disconnectScheduledRef.current = false;
+        }
       },
     };
   }, [startSession, endSession, isConnectionActive]);

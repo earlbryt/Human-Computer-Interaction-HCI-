@@ -88,7 +88,7 @@ export function AgentControlBar({
       {...props}
     >
       {/* Chat Input */}
-      {visibleControls.chat && (
+      {isConnectionActive && visibleControls.chat && (
         <ChatInput
           chatOpen={chatOpen}
           isAgentAvailable={isAgentAvailable}
@@ -97,61 +97,63 @@ export function AgentControlBar({
       )}
 
       <div className="flex gap-1">
-        <div className="flex grow gap-1">
-          {/* Toggle Microphone */}
-          {visibleControls.microphone && (
-            <TrackSelector
-              kind="audioinput"
-              aria-label="Toggle microphone"
-              source={Track.Source.Microphone}
-              pressed={microphoneToggle.enabled}
-              disabled={microphoneToggle.pending}
-              audioTrackRef={micTrackRef}
-              onPressedChange={microphoneToggle.toggle}
-              onMediaDeviceError={handleMicrophoneDeviceSelectError}
-              onActiveDeviceChange={handleAudioDeviceChange}
-            />
-          )}
+        {isConnectionActive && (
+          <div className="flex grow gap-1">
+            {/* Toggle Microphone */}
+            {visibleControls.microphone && (
+              <TrackSelector
+                kind="audioinput"
+                aria-label="Toggle microphone"
+                source={Track.Source.Microphone}
+                pressed={microphoneToggle.enabled}
+                disabled={microphoneToggle.pending}
+                audioTrackRef={micTrackRef}
+                onPressedChange={microphoneToggle.toggle}
+                onMediaDeviceError={handleMicrophoneDeviceSelectError}
+                onActiveDeviceChange={handleAudioDeviceChange}
+              />
+            )}
 
-          {/* Toggle Camera */}
-          {visibleControls.camera && (
-            <TrackSelector
-              kind="videoinput"
-              aria-label="Toggle camera"
-              source={Track.Source.Camera}
-              pressed={cameraToggle.enabled}
-              pending={cameraToggle.pending}
-              disabled={cameraToggle.pending}
-              onPressedChange={cameraToggle.toggle}
-              onMediaDeviceError={handleCameraDeviceSelectError}
-              onActiveDeviceChange={handleVideoDeviceChange}
-            />
-          )}
+            {/* Toggle Camera */}
+            {visibleControls.camera && (
+              <TrackSelector
+                kind="videoinput"
+                aria-label="Toggle camera"
+                source={Track.Source.Camera}
+                pressed={cameraToggle.enabled}
+                pending={cameraToggle.pending}
+                disabled={cameraToggle.pending}
+                onPressedChange={cameraToggle.toggle}
+                onMediaDeviceError={handleCameraDeviceSelectError}
+                onActiveDeviceChange={handleVideoDeviceChange}
+              />
+            )}
 
-          {/* Toggle Screen Share */}
-          {visibleControls.screenShare && (
-            <TrackToggle
+            {/* Toggle Screen Share */}
+            {visibleControls.screenShare && (
+              <TrackToggle
+                size="icon"
+                variant="secondary"
+                aria-label="Toggle screen share"
+                source={Track.Source.ScreenShare}
+                pressed={screenShareToggle.enabled}
+                disabled={screenShareToggle.pending}
+                onPressedChange={screenShareToggle.toggle}
+              />
+            )}
+
+            {/* Toggle Transcript */}
+            <Toggle
               size="icon"
               variant="secondary"
-              aria-label="Toggle screen share"
-              source={Track.Source.ScreenShare}
-              pressed={screenShareToggle.enabled}
-              disabled={screenShareToggle.pending}
-              onPressedChange={screenShareToggle.toggle}
-            />
-          )}
-
-          {/* Toggle Transcript */}
-          <Toggle
-            size="icon"
-            variant="secondary"
-            aria-label="Toggle transcript"
-            pressed={chatOpen}
-            onPressedChange={handleToggleTranscript}
-          >
-            <ChatTextIcon weight="bold" />
-          </Toggle>
-        </div>
+              aria-label="Toggle transcript"
+              pressed={chatOpen}
+              onPressedChange={handleToggleTranscript}
+            >
+              <ChatTextIcon weight="bold" />
+            </Toggle>
+          </div>
+        )}
 
         {/* Disconnect */}
         {visibleControls.leave && (
