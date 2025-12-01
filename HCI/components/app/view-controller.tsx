@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { AnimatePresence, type AnimationDefinition, motion } from 'motion/react';
 import type { AppConfig } from '@/app-config';
 import { SessionView } from '@/components/app/session-view';
@@ -30,10 +30,17 @@ const VIEW_MOTION_PROPS = {
 
 interface ViewControllerProps {
   appConfig: AppConfig;
+  autoStartCall?: boolean;
 }
 
-export function ViewController({ appConfig }: ViewControllerProps) {
+export function ViewController({ appConfig, autoStartCall = false }: ViewControllerProps) {
   const { isConnectionActive, connect, onDisconnectTransitionComplete } = useConnection();
+
+  useEffect(() => {
+    if (autoStartCall && !isConnectionActive) {
+      connect();
+    }
+  }, [autoStartCall, connect, isConnectionActive]);
 
   const handleAnimationComplete = useCallback(
     (definition: AnimationDefinition) => {
