@@ -6,8 +6,7 @@ export interface PlantDiagnosis {
   isHealthy: boolean | null;
 }
 
-const PLANT_API_BASE_URL =
-  process.env.NEXT_PUBLIC_PLANT_API_BASE_URL ?? 'https://codoc-backend0.onrender.com';
+const PLANT_API_BASE_URL = process.env.NEXT_PUBLIC_PLANT_API_BASE_URL ?? '/api/plant';
 
 export async function analyzeLeaf(file: File): Promise<PlantDiagnosis> {
   const formData = new FormData();
